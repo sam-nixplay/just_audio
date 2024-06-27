@@ -8,7 +8,6 @@
     NSString *_uri;
     IndexedPlayerItem *_playerItem;
     IndexedPlayerItem *_playerItem2;
-    /* CMTime _duration; */
     LoadControl *_loadControl;
     NSMutableDictionary *_headers;
     NSDictionary *_options;
@@ -47,9 +46,8 @@
         item = [[IndexedPlayerItem alloc] initWithAsset:asset];
     } else {
         if (_headers) {
-            // Use user-agent key if it is the only header and the API is supported.
             if ([_headers count] == 1) {
-                if (@available(macOS 13.0, iOS 16.0, *)) {
+                if (@available(macOS 13.0, iOS 16.0, tvOS 16.0, *)) {
                     NSString *userAgent = _headers[@"User-Agent"];
                     if (userAgent) {
                         [_headers removeObjectForKey:@"User-Agent"];
@@ -72,19 +70,18 @@
         AVURLAsset *asset = [AVURLAsset URLAssetWithURL:[NSURL URLWithString:uri] options:assetOptions];
         item = [[IndexedPlayerItem alloc] initWithAsset:asset];
     }
-    if (@available(macOS 10.13, iOS 11.0, *)) {
-        // This does the best at reducing distortion on voice with speeds below 1.0
+    if (@available(macOS 10.13, iOS 11.0, tvOS 11.0, *)) {
         item.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmTimeDomain;
     }
-    if (@available(macOS 10.12, iOS 10.0, *)) {
+    if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, *)) {
         if (_loadControl.preferredForwardBufferDuration != (id)[NSNull null]) {
             item.preferredForwardBufferDuration = (double)([_loadControl.preferredForwardBufferDuration longLongValue]/1000) / 1000.0;
         }
     }
-    if (@available(iOS 9.0, macOS 10.11, *)) {
+    if (@available(iOS 9.0, macOS 10.11, tvOS 10.0, *)) {
         item.canUseNetworkResourcesForLiveStreamingWhilePaused = _loadControl.canUseNetworkResourcesForLiveStreamingWhilePaused;
     }
-    if (@available(iOS 8.0, macOS 10.10, *)) {
+    if (@available(iOS 8.0, macOS 10.10, tvOS 10.0, *)) {
         if (_loadControl.preferredPeakBitRate != (id)[NSNull null]) {
             item.preferredPeakBitRate = [_loadControl.preferredPeakBitRate doubleValue];
         }
@@ -93,9 +90,8 @@
     return item;
 }
 
-// Not used. XXX: Remove?
 - (void)applyPreferredForwardBufferDuration {
-    if (@available(macOS 10.12, iOS 10.0, *)) {
+    if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, *)) {
         if (_loadControl.preferredForwardBufferDuration != (id)[NSNull null]) {
             double value = (double)([_loadControl.preferredForwardBufferDuration longLongValue]/1000) / 1000.0;
             _playerItem.preferredForwardBufferDuration = value;
@@ -107,7 +103,7 @@
 }
 
 - (void)applyCanUseNetworkResourcesForLiveStreamingWhilePaused {
-    if (@available(iOS 9.0, macOS 10.11, *)) {
+    if (@available(iOS 9.0, macOS 10.11, tvOS 10.0, *)) {
         _playerItem.canUseNetworkResourcesForLiveStreamingWhilePaused = _loadControl.canUseNetworkResourcesForLiveStreamingWhilePaused;
         if (_playerItem2) {
             _playerItem2.canUseNetworkResourcesForLiveStreamingWhilePaused = _loadControl.canUseNetworkResourcesForLiveStreamingWhilePaused;
@@ -116,7 +112,7 @@
 }
 
 - (void)applyPreferredPeakBitRate {
-    if (@available(iOS 8.0, macOS 10.10, *)) {
+    if (@available(iOS 8.0, macOS 10.10, tvOS 10.0, *)) {
         if (_loadControl.preferredPeakBitRate != (id)[NSNull null]) {
             double value = [_loadControl.preferredPeakBitRate doubleValue];
             _playerItem.preferredPeakBitRate = value;
@@ -140,12 +136,15 @@
 }
 
 - (void)play:(AVQueuePlayer *)player {
+    // Implementation for play if needed
 }
 
 - (void)pause:(AVQueuePlayer *)player {
+    // Implementation for pause if needed
 }
 
 - (void)stop:(AVQueuePlayer *)player {
+    // Implementation for stop if needed
 }
 
 - (void)seek:(CMTime)position completionHandler:(void (^)(BOOL))completionHandler {
@@ -187,6 +186,7 @@
 }
 
 - (void)setDuration:(CMTime)duration {
+    // Not implemented
 }
 
 - (CMTime)position {
@@ -197,7 +197,6 @@
     } else {
         return _playerItem.currentTime;
     }
-    
 }
 
 - (CMTime)bufferedPosition {

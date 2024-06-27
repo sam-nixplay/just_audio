@@ -46,6 +46,8 @@ flutter:
         pluginClass: JustAudioPlugin
       ios:
         pluginClass: JustAudioPlugin
+      tvos:
+        pluginClass: JustAudioPlugin  
       macos:
         pluginClass: JustAudioPlugin
       web:
