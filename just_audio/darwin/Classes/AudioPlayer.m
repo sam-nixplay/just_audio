@@ -619,7 +619,7 @@
     IndexedPlayerItem *endedPlayerItem = (IndexedPlayerItem *)notification.object;
     IndexedAudioSource *endedSource = endedPlayerItem.audioSource;
     if (_loopMode == loopOne) {
-        [endedSource.seek:kCMTimeZero];
+        [endedSource seek:kCMTimeZero];
         _justAdvanced = YES;
     } else if (_loopMode == loopAll) {
         [endedSource seek:kCMTimeZero];

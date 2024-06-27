@@ -37,7 +37,7 @@
 
 // Finds audio sources by ID and adds matches to the provided array
 - (void)findById:(NSString *)sourceId matches:(NSMutableArray<AudioSource *> *)matches {
-    [super.findById:sourceId matches:matches];
+    [super findById:sourceId matches:matches];
     [_audioSource findById:sourceId matches:matches];
 }
 
